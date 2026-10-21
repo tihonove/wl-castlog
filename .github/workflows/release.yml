@@ -1,0 +1,43 @@
+# Tag v0.1.0 → .deb for Ubuntu 24.04/26.04 × amd64/arm64 → GitHub Release.
+# The apt repository tihonove/apt picks the packages up from there.
+name: release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  deb:
+    strategy:
+      fail-fast: false
+      matrix:
+        ubuntu: ['24.04', '26.04']
+        runner: [ubuntu-24.04, ubuntu-24.04-arm]
+    runs-on: ${{ matrix.runner }}
+    container: ubuntu:${{ matrix.ubuntu }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build
+        shell: bash
+        run: |
+          v=${GITHUB_REF_NAME#v}
+          DEB_VERSION=${v/-/+} debian/build-deb
+      - uses: actions/upload-artifact@v4
+        with:
+          name: deb-${{ matrix.ubuntu }}-${{ matrix.runner }}
+          path: out/*.deb
+
+  release:
+    needs: deb
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: out
+          merge-multiple: true
+      - run: gh release create "$GITHUB_REF_NAME" out/*.deb --repo "$GITHUB_REPOSITORY" --title "$GITHUB_REF_NAME" --generate-notes
+        env:
+          GH_TOKEN: ${{ github.token }}

@@ -1,0 +1,7 @@
+# Give the active session access to mice, touchpads and trackpoints so curlog sees
+# clicks. Keyboards stay closed: otherwise any user process could read keystrokes.
+# Priority < 73: the uaccess tag is turned into ACLs by 73-seat-late.rules
+# (dh_installudev installs this file as 60-curlog.rules).
+SUBSYSTEM=="input", KERNEL=="event*", ENV{ID_INPUT_KEYBOARD}!="1", ENV{ID_INPUT_MOUSE}=="1", TAG+="uaccess"
+SUBSYSTEM=="input", KERNEL=="event*", ENV{ID_INPUT_KEYBOARD}!="1", ENV{ID_INPUT_TOUCHPAD}=="1", TAG+="uaccess"
+SUBSYSTEM=="input", KERNEL=="event*", ENV{ID_INPUT_KEYBOARD}!="1", ENV{ID_INPUT_POINTINGSTICK}=="1", TAG+="uaccess"

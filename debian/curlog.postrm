@@ -1,0 +1,8 @@
+#!/bin/sh
+set -e
+# Drop the ACLs right away rather than on the next replug.
+if [ "$1" = remove ] && command -v udevadm >/dev/null; then
+	udevadm control --reload || true
+	udevadm trigger -s input --action=change || true
+fi
+#DEBHELPER#

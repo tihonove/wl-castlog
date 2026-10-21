@@ -1,0 +1,26 @@
+#!/bin/bash
+# Build a .deb for the Ubuntu release it runs in (an ubuntu:<version> container).
+#   DEB_VERSION=0.1.0 debian/build-deb   → out/*.deb
+# CI calls it the same way (.github/workflows/release.yml).
+set -euo pipefail
+cd "$(dirname "$0")/.."
+: "${DEB_VERSION:?DEB_VERSION is required, e.g. 0.1.0}"
+
+export DEBIAN_FRONTEND=noninteractive
+apt-get update -q
+apt-get install -qy --no-install-recommends build-essential
+apt-get build-dep -qy ./
+
+. /etc/os-release
+pkg=$(sed -n 's/^Source: //p' debian/control)
+cat > debian/changelog <<CL
+$pkg ($DEB_VERSION~$VERSION_CODENAME) $VERSION_CODENAME; urgency=medium
+
+  * Build $DEB_VERSION for Ubuntu $VERSION_ID.
+
+ -- $(sed -n 's/^Maintainer: //p' debian/control)  $(date -R)
+CL
+
+dpkg-buildpackage -b -us -uc
+mkdir -p out
+mv ../"${pkg}"_*.deb out/

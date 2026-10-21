@@ -1,0 +1,9 @@
+#!/bin/sh
+set -e
+# The uaccess rule only applies after a trigger: otherwise ACLs on existing
+# /dev/input/event* appear only once the mouse is replugged.
+if [ "$1" = configure ] && command -v udevadm >/dev/null; then
+	udevadm control --reload || true
+	udevadm trigger -s input --action=change || true
+fi
+#DEBHELPER#

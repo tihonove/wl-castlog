@@ -1,0 +1,17 @@
+Source: curlog
+Section: video
+Priority: optional
+Maintainer: Eugene Tihonov <tihonov.ea@gmail.com>
+Build-Depends: debhelper-compat (= 13), pkg-config, libwayland-dev, libwayland-bin
+Standards-Version: 4.6.2
+Homepage: https://github.com/tihonove/curlog
+Rules-Requires-Root: no
+
+Package: curlog
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: log the Wayland pointer position and clicks as JSONL
+ Pointer position comes from the compositor via an ext-image-copy-capture
+ cursor session; clicks are read from /dev/input. Ships a udev rule that
+ gives the active session access to mice, touchpads and trackpoints
+ (keyboards stay closed).
