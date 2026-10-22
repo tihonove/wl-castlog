@@ -22,3 +22,8 @@ curlog -g "1920,0 800x600" [-f ...]    region, as from slurp
 
 From the apt repository [tihonove/apt](https://github.com/tihonove/apt), package `curlog`.
 From source: `make && sudo make install` (needs `libwayland-dev`, `wayland-scanner`).
+
+## Release
+
+`./release` (or `./release minor|major|X.Y.Z`) tags the next version, waits for
+CI to build the packages and publishes the apt repository.
