@@ -19,8 +19,6 @@ wl-castlog -g "1920,0 800x600" [-f ...]    region, as from slurp
 - Format and clock are described at the top of `wl-castlog.c`. The last line is
   `{"ev":"stop"}`: the video and the log are aligned by their ends.
 
-Formerly `curlog`; the package replaces it.
-
 ## Install
 
 From the apt repository [tihonove/apt](https://github.com/tihonove/apt), package `wl-castlog`.
