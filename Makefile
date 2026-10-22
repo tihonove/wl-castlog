@@ -8,8 +8,8 @@ SRCS := $(NAMES:%=proto/%.c)
 
 CFLAGS ?= -O2 -Wall -Wextra -Wno-unused-parameter
 
-curlog: curlog.c $(HDRS) $(SRCS)
-	$(CC) $(CPPFLAGS) $(CFLAGS) -Iproto -o $@ curlog.c $(SRCS) $(shell pkg-config --cflags --libs wayland-client) $(LDFLAGS)
+wl-castlog: wl-castlog.c $(HDRS) $(SRCS)
+	$(CC) $(CPPFLAGS) $(CFLAGS) -Iproto -o $@ wl-castlog.c $(SRCS) $(shell pkg-config --cflags --libs wayland-client) $(LDFLAGS)
 
 proto/%.h: protocol/%.xml | proto
 	wayland-scanner client-header $< $@
@@ -18,9 +18,9 @@ proto/%.c: protocol/%.xml | proto
 proto:
 	mkdir -p $@
 
-install: curlog
-	install -Dm755 curlog $(DESTDIR)$(PREFIX)/bin/curlog
+install: wl-castlog
+	install -Dm755 wl-castlog $(DESTDIR)$(PREFIX)/bin/wl-castlog
 
 clean:
-	rm -rf curlog proto
+	rm -rf wl-castlog proto
 .PHONY: install clean

@@ -1,6 +1,6 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: curlog
-Source: https://github.com/tihonove/curlog
+Upstream-Name: wl-castlog
+Source: https://github.com/tihonove/wl-castlog
 
 Files: *
 Copyright: 2026 Eugene Tihonov

@@ -1,7 +1,7 @@
-// curlog — logs pointer movement as JSONL until stopped (SIGINT/SIGTERM).
+// wl-castlog — logs pointer movement as JSONL until stopped (SIGINT/SIGTERM).
 //
-//   curlog -o DP-2 [-f out.jsonl]          whole output
-//   curlog -g "1920,0 800x600" [-f ...]    region in layout coordinates, as from slurp
+//   wl-castlog -o DP-2 [-f out.jsonl]          whole output
+//   wl-castlog -g "1920,0 800x600" [-f ...]    region in layout coordinates, as from slurp
 //
 // The position comes from the compositor itself through an ext-image-copy-capture
 // cursor session, which needs no access to /dev/input. Wayland doesn't show clicks
@@ -72,7 +72,7 @@ static int64_t now_us(void)
 
 static void die(const char *msg)
 {
-	fprintf(stderr, "curlog: %s\n", msg);
+	fprintf(stderr, "wl-castlog: %s\n", msg);
 	exit(1);
 }
 
@@ -235,7 +235,7 @@ static const struct ext_image_copy_capture_session_v1_listener capture_session_l
 
 static void usage(void)
 {
-	fputs("usage: curlog (-o OUTPUT | -g \"X,Y WxH\") [-f FILE]\n", stderr);
+	fputs("usage: wl-castlog (-o OUTPUT | -g \"X,Y WxH\") [-f FILE]\n", stderr);
 	exit(2);
 }
 
@@ -318,7 +318,7 @@ int main(int argc, char **argv)
 	int input_fds[MAX_INPUTS];
 	int ninputs = open_click_devices(input_fds);
 	if (!ninputs)
-		fputs("curlog: no readable mouse in /dev/input, clicks are not logged\n", stderr);
+		fputs("wl-castlog: no readable mouse in /dev/input, clicks are not logged\n", stderr);
 
 	fprintf(out, "{\"v\":1,\"clock\":\"realtime_us\",\"t\":%ld,\"output\":\"%s\","
 			"\"scale\":%d,\"region\":[%d,%d,%d,%d],\"click_devices\":%d}\n",
